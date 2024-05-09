@@ -1,3 +1,4 @@
 #!/usr/bin/python3
-
-print(''.join(chr(i) for i in range(97, 123) if chr(i) not in ('e', 'q')), end='')
+for abc in range(97, 123):
+    if abc != 101 and abc != 113:
+        print(f"{chr(abc)}", end="")
