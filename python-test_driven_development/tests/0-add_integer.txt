@@ -13,3 +13,11 @@ of the imported function
 98
 >>> add_integer(0, 0)
 0
+>>> add_integer(3, 5)
+8
+>>> add_integer(5, 5)
+10
+>>> add_integer(120, -20)
+100
+>>> add_integer(200, -100)
+100
