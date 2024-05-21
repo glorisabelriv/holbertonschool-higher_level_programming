@@ -8,7 +8,18 @@ a and b must be first casted to integers if they are float
 
 
 def add_integer(a, b=98):
-
+    """
+    >>> add_integer(1, 2)
+    3
+    >>> add_integer(100, -2)
+    98
+    >>> add_integer(100.3, -2)
+    98
+    >>> add_integer(0, 0)
+    0
+    >>> add_integer(4, "School")
+    Traceback (most recent call last):
+    """
     if not isinstance(a, (int, float)):
         raise TypeError("a must be an integer or float")
     if not isinstance(b, (int, float)):
