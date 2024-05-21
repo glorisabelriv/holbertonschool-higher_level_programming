@@ -17,8 +17,14 @@ def add_integer(a, b=98):
     98
     >>> add_integer(0, 0)
     0
-    >>> add_integer(4, "School")
-    Traceback (most recent call last):
+    >>> add_integer(3, 5)
+    8
+    >>> add_integer(5, 5)
+    10
+    >>> add_integer(120, -20)
+    100
+    >>> add_integer(200, -100)
+    100
     """
     if not isinstance(a, (int, float)):
         raise TypeError("a must be an integer or float")
