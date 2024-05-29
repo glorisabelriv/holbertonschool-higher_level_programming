@@ -4,17 +4,14 @@
 
 class Student():
     """Write a class Student that defines a student by:"""
-
     def __init__(self, first_name, last_name, age):
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def to_json(self, attrs=None):
-        obj_dict = {}
         if attrs is None:
-            attrs = dir(self)
-        for i in attrs:
-            if i in dir(self):
-                obj_dict[i] = getattr(self, i)
-            return obj_dict
+            return self.__dict__
+        if isinstance(attrs, list) and all(isinstance(attr, str) for attr in attrs):
+            return {attr: getattr(self, attr) for attr in attrs if hasattr(self, attr)}
+        return self.__dict__
