@@ -2,6 +2,7 @@ import http.server
 import socketserver
 import json
 
+
 class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -29,7 +30,9 @@ class SimpleHTTPRequestHandler(http.server.BaseHTTPRequestHandler):
             response = {"error": "Endpoint not found"}
             self.wfile.write(json.dumps(response).encode('utf-8'))
 
+
 PORT = 8000
+
 
 Handler = SimpleHTTPRequestHandler
 
