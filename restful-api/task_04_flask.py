@@ -2,33 +2,25 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Base de datos en memoria para usuarios
-users = {
-    "jane": {"username": "jane", "name": "Jane", "age": 28, "city": "Los Angeles"},
-    "john": {"username": "john", "name": "John", "age": 30, "city": "New York"}
-}
+users = {}
 
 
-# Ruta raíz
-@app.route('/')
+@app.route("/")
 def home():
     return "Welcome to the Flask API!"
 
 
-# Ruta para obtener datos en formato JSON
-@app.route('/data')
-def get_data():
+@app.route("/data")
+def get_usernames():
     return jsonify(list(users.keys()))
 
 
-# Ruta para verificar el estado del API
-@app.route('/status')
+@app.route("/status")
 def status():
     return "OK"
 
 
-# Ruta para obtener datos de un usuario específico
-@app.route('/users/<username>')
+@app.route("/users/<username>")
 def get_user(username):
     user = users.get(username)
     if user:
@@ -37,22 +29,16 @@ def get_user(username):
         return jsonify({"error": "User not found"}), 404
 
 
-# Ruta para agregar un nuevo usuario
-@app.route('/add_user', methods=['POST'])
+@app.route("/add_user", methods=["POST"])
 def add_user():
-    new_user = request.get_json()
-    if not new_user:
-        return jsonify({"error": "Invalid input"}), 400
-
-    username = new_user.get('username')
+    new_user = request.json
+    username = new_user.get("username")
     if not username:
         return jsonify({"error": "Username is required"}), 400
-
-    if username in users:
+    if username == users:
         return jsonify({"error": "User already exists"}), 400
-
     users[username] = new_user
-    return jsonify({"message": "User added", "user": new_user})
+    return jsonify({"message": "User added", "user": new_user}), 201
 
 
 if __name__ == "__main__":
