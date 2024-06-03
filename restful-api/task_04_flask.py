@@ -23,7 +23,7 @@ def get_data():
 
 # Ruta para verificar el estado del API
 @app.route('/status')
-def get_status():
+def status():
     return "OK"
 
 
@@ -41,7 +41,13 @@ def get_user(username):
 @app.route('/add_user', methods=['POST'])
 def add_user():
     new_user = request.get_json()
+    if not new_user:
+        return jsonify({"error": "Invalid input"}), 400
+
     username = new_user.get('username')
+    if not username:
+        return jsonify({"error": "Username is required"}), 400
+
     if username in users:
         return jsonify({"error": "User already exists"}), 400
 
