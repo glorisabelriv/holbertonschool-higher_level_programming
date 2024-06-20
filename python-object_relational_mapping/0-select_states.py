@@ -1,34 +1,24 @@
 #!/usr/bin/python3
+"""Document module"""
+
+
 import MySQLdb
-import sys
 
-if __name__ == "__main__":
-    # Obtener los argumentos de linea de comandos
-    mysql_username = sys.argv[1]
-    mysql_password = sys.argv[2]
-    database_name = sys.argv[3]
+from sys import argv
 
-    # Conectarse al servidor MYSQL
-    db = MySQLdb.connect(
-        host="localhost",
-        user=mysql_username,
-        passwd=mysql_password,
-        db=database_name,
-        port=3306)
+if __name__ == '__main__':
 
-    # Crear un cursor para ejecutar consultas
+    username = argv[1]
+    password = argv[2]
+    database_name = argv[3]
+
+    db = MySQLdb.connect(host="localhost", port=3306, user=username,
+                         passwd=password, db=database_name)
     cur = db.cursor()
-
-    # Ejecutar consulta SQL
-    cur.execute("SELECT * FROM states ORDER BY id ASC")
-
-    # Obtener todos los resultados de la consulta
+    cur.execute("SELECT * FROM states")
     rows = cur.fetchall()
-
-    # Imprimir cada fila
     for row in rows:
         print(row)
-
-    # Cerrar el cursor y la conexion a la base de datos
     cur.close()
     db.close()
+    
