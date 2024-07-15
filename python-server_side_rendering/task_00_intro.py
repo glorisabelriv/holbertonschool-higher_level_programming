@@ -1,57 +1,34 @@
 import os
 
 def generate_invitations(template, attendees):
-    # Verificar que el template es una cadena de texto
+
     if not isinstance(template, str):
-        print("Error: El template no es una cadena de texto")
+        print("Error: Template must be a string.")
         return
-    
-    # Verificar que attendees es una lista de diccionarios
-    if not isinstance(attendees, list) or not all (isinstance(item, dict) for item in attendees):
-        print("Error: Los attendees no son una lista de diccionarios")
+
+    if not all(isinstance(attendee, dict) for attendee in attendees):
+        print("Error: Attendees must be in a list of dictionaries.")
         return
-    
-    # Verificar si el template esta vacio
-    if template.strip() == "":
-        print("Error: El template esta vacio, no se generaron archivos de salida")
+
+    if not template:
+        print("Template is empty, no output files generated.")
         return
-    
-    # Verificar si la lista de attendees esta vacia
-    if len(attendees) == 0:
-        print("No se proporconaron datos, no se generaron archivos de salida")
+
+    if not attendees:
+        print("No data provided, no output files generated.")
         return
-    
-    # Procesar cada attendees
+
     for index, attendee in enumerate(attendees, start=1):
-        # Reemplazar los placeholders del template
-        invitation = template
-        for key in ["name", "event_title", "event_date", "event_location"]:
-            value = attendee.get(key, "N/A")
-            if value is None:
-                value = "N/A"
-            invitation = invitation.replace(f"{{{{{key}}}}}", value)
-
-
-            # Nombre del archivo de salida
-        output_filename = f"output_{index}.txt"
-        
-        # Escribir la invitación en un archivo
-        with open(output_filename, 'w') as output_file:
-            output_file.write(invitation)
-        print(f"Archivo generado: {output_filename}")
-
-# Código para probar la función
-if __name__ == "__main__":
-    # Leer el template de un archivo
-    with open('template.txt', 'r') as file:
-        template_content = file.read()
-
-    # Lista de asistentes
-    attendees = [
-        {"name": "Alice", "event_title": "Python Conference", "event_date": "2023-07-15", "event_location": "New York"},
-        {"name": "Bob", "event_title": "Data Science Workshop", "event_date": "2023-08-20", "event_location": "San Francisco"},
-        {"name": "Charlie", "event_title": "AI Summit", "event_date": None, "event_location": "Boston"}
-    ]
-
-    # Llamar a la función con el template y la lista de attendees
-    generate_invitations(template_content, attendees)
+        attendee = attendee.copy()
+        missing_keys = [key for key in ['event_date', 'event_location', 'event_title'] if key not in attendee]
+        for key in missing_keys:
+            print(f"Warning: Replacing missing data '{key}' with 'N/A'.")
+            attendee[key] = "N/A"
+        try:
+            invitation = template.format(**attendee)
+        except KeyError as e:
+            print(f"Warning: Unexpected missing data {e}")
+            attendee[str(e)] = "N/A"
+            invitation = template.format(**attendee)
+        with open(f"output_{index}.txt", "w") as file:
+            file.write(invitation)
