@@ -26,8 +26,10 @@ def generate_invitations(template, attendees):
         # Reemplazar los placeholders del template
         invitation = template
         for key in ["name", "event_title", "event_date", "event_location"]:
-            value = attendee.get(key, "Failed")
-            invitation = invitation.replace(f"{{{{{key}}}}}", value if value else "Failed")
+            value = attendee.get(key, "N/A")
+            if value is None:
+                value = "N/A"
+            invitation = invitation.replace(f"{{{{{key}}}}}", value)
 
 
             # Nombre del archivo de salida
