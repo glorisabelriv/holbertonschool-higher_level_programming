@@ -1,13 +1,9 @@
 #!/usr/bin/python3
-"""
-Write a class MyList that inherits from list
-"""
+""" class MyList that inherits from list """
 
 
 class MyList(list):
-    """
-    Write a class MyList that inherits from list
-    """
+    """ My list is a class with a public method print_sorted """
+
     def print_sorted(self):
-        sorted_list = sorted(self)
-        print(sorted_list)
+        print(sorted(self))
